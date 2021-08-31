@@ -1,0 +1,241 @@
+Hey Rod, there?
+
+mohit.. im here..
+
+mohit ?
+
+yup
+there were 4 pdf, I have opened all in the chrome tab please check it once.
+
+
+mohit can u teach me how to run the automation ..... 
+
+sure
+
+lets do IT...
+
+The files are in "C:\ShopeeAutomation"
+
+now double clcik on the "automation.bat" file
+
+HARDware problems mohit... 
+yup chrome got stucl, we can just restart that.
+
+
+question mohit.. 
+
+this pc only has single core... 8 gb of ram...  i think it will not suffice..
+
+It's fine, as we are opening just the chrom and some clicks. I have ran it just now. see the files
+
+The files just got created, it migh stuck just because 
+of something chromes. or ui, but that too will stuck in 
+the begin only not in between.
+
+Let's run it again
+
+there won't be any order as I have just run this.
+
+question..
+
+shopee sometimes add some shipping options like NINJA van..
+
+can we also have option for that ? 
+
+We have to add those. right now it's not supported for standard and jt.
+
+another question....
+
+can we make it one time print... no need to click the pdf one by one ? 
+
+No, because we need to edit the pdf, if we are click all at once.
+that it would be very very hard to edit those.
+but we can merge the pdf in the last, that will work ?
+
+
+let me give you an example...
+
+for example.. today is shopee sale... and we have 200 orders...
+clicking 200 orders one by one is really really hard..... 
+
+We can run this every 30 minutes, 
+so we don't need to worry about the order right?
+
+let me give you a one day process..
+
+for example if you have orders today at 8 am singapore time...
+
+you have only 3 hours to prepare and put the products in plastic pouch and print the waybill and stick the waybill to pouch
+because J and T motorcycle will pickup the products by 11 am singapore time ....
+
+Okay, but if we are click pdf once, then it will be really difficult to edit the pdf and sometimes, it can cause mismtach of the product to write.
+
+wait im thinking.... the purpose of this automation is to ease up everything right ? so whats our other options... mohit..
+Automation is easing your work right.
+you have to just double click the "automation.bat" file.
+Then it will login go to shippment, fetch the pdf, save it and edit it. and in the end it will merge.
+All you have to just double click on single file.
+
+so there are no options on bulk printing for now ?  
+
+Yes, you are correct. because if will mass print then it not possible to edit the pdf.
+
+pdf is very hard to edit, because it don't have any structure.
+
+hmm ok ... how bout exporting it as JPEG instead of PDF but still same size a6 paper.... what do u think ? 
+
+We have save it as pdf, not jpeg and even image files don't have any structure, you have to use heavy python packages to load it.
+which will increase the process timing.
+
+hmm.. right now we just used the other pc to just test the sample... because its not working on windows 7.. 
+
+wait im thinking...
+
+Suree, We have write the code to take less time and completing the purprose too.
+Only thing is to merge the pdf, which will help to print easily. and that too can be added in short time only.
+Pdf and jpeg are hard to modify that is why we have to go one by one only.
+
+for example today we have 200 orders... I dont think this pc can handle that task... this one only has single core.. and 8 gb of RAM..
+I can handle, as it's a click on the chromes. plus you can run it every 30-60 minutes, so it won't have to process this many
+orders in a single go.
+
+mohit . i will buy new pc....  what day are u free to install it again ? 
+
+When you are available? I can install it.
+But honestly it can handle 200 orders without any issue.
+
+there will be support after this right ? 
+
+Yup, for one month as we have talk.
+
+let me check print the pdf on a6 paper and take a picture with it to see... wait..
+
+mohit
+
+yes
+
+there are some minor problems..
+
+i will take a picture on the waybill so u can see.
+sure
+
+what's the issue?
+
+check this one.
+
+I checked that, but that is something I'm not changing, because if we are then all the waybill will be having issue.
+
+
+wait
+
+quantity is 3 
+
+orders appeneded are only 2 as u can see
+
+no, there are 3 only, that you can see.
+
+"1 x ", this means varition is not there. Can you please open the order details of the order id.
+
+plus the font .. can we make it bigger and bolder ? 
+
+that need to check the font one.
+
+wait
+
+if you see there is no variation for the last product., but the quantity is added .
+
+
+
+mohit give me 2 mins .
+sure
+
+
+??
+
+ROD there?
+
+mohit .. im here ..
+
+so the variation is the problem .. 
+
+problem like it's not there, that's why it is coming blank, but the quantity will be there.
+
+
+some font are not clear.. can you do something about this to make it more visible ?
+we can change the font type.
+
+arial is ok ? 
+
+We have limited font type, and arial is not one of them.
+
+so what are the choices
+
+I need to check those again, the supported ones.
+
+when can u get back to me ?  
+
+give me a movement, even I need youy the font name, it won't make differenece. I have tested all, this on was the best, it' supports only 5-6 fonts.
+
+can we make it bigger a bit instead ? 
+
+then it's going outside the box.
+
+
+just a bit mohit
+
+It's not that simple to increase the points, we can adjust the points, we have to make the scale based on the text, 
+I tried it all but out of luck. pdf :( 
+
+
+please enter the otp there
+
+ROD there?
+
+?????
+
+Rod??
+
+you there????.
+..
+
+wait.. my stomarch hurts
+
+this is the otp
+
+
+152460
+
+there are no orders, But I have make the fonts bold, so it will help.
+
+yes. thanks. lets wrap this up and will pay u on upwork.....
+One more thing, I have added the code for merge pdf, so you will have a single pdf. :)
+
+it will be exported automatically to the folder : 
+Next time you will have pdf, all the pdf will be merge 
+into merge.pdf in the update_pdf folder, make sure you have copy before running the next automation
+
+copy of what ?  
+
+the merge.pdf, once the automation is completed, you will have merge.pdf file in the "update_pdf" folder.
+So next time before you runnin ght automation make sure you are copying that file "merge.pdf", because it will get overwritten.
+
+
+there are 2 shipment options right ?  so the merge pdf will include the J and T and Standary Delivery ?
+
+Yes
+
+everything would be on a6 right ?
+
+Yes :)
+
+
+were good Mohit..... will pay u now on upwork...
+
+1 moNTH support. thank u very much..
+
+Yes Rod for sure. after payment, please make sure to give us the feedback, feedback can be given after end contract :)
+Even I will make sure to give the feedback :)
+
+ok mohit. thanks... lets meet at upwork... thank u again..
+
+Thanks :)
