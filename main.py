@@ -14,8 +14,7 @@ import pyautogui
 import glob
 import traceback
 from datetime import datetime
-
-from urllib3.packages.six import b
+# from urllib3.packages.six import b
 
 
 class ShopeeAutomation:
@@ -29,7 +28,7 @@ class ShopeeAutomation:
         with open("config\\config.json", "r") as file:
             paths = json.loads(file.read())[0]
         self.username = paths.get("username")
-        self.passw = paths.get("password")
+        self.password = paths.get("password")
         self.homeDirectory = paths.get("homeDirectory")
         self.jsonFolder = paths.get("jsonFolder")
         self.pdfFolder = paths.get("pdfFolder")
@@ -56,14 +55,14 @@ class ShopeeAutomation:
                     "/html/body/div/main/div/div[1]/div/div/div/div/div/div/div[2]/div[2]/div/div/input",
                 )
             )
-        )  #
+        )
 
         self.browser.find_element_by_xpath(
             "/html/body/div/main/div/div[1]/div/div/div/div/div/div/div[2]/div[1]/div/div/div/input"
         ).send_keys(self.username)
         self.browser.find_element_by_xpath(
             "/html/body/div/main/div/div[1]/div/div/div/div/div/div/div[2]/div[2]/div/div/input"
-        ).send_keys(self.passw)
+        ).send_keys(self.password)
         self.browser.find_element_by_xpath(
             "/html/body/div/main/div/div[1]/div/div/div/div/div/div/button[2]"
         ).click()
@@ -129,8 +128,8 @@ class ShopeeAutomation:
             time.sleep(5)
             if self.browser.current_url == self.url:
                 self.login()
-                print(self.browser.current_url)
-                print(self.url)
+                # print(self.browser.current_url)
+                # print(self.url)
 
         else:
             self.login()
@@ -149,24 +148,22 @@ class ShopeeAutomation:
             EC.presence_of_element_located(
                 (
                     By.XPATH,
-                    '//*[@id="app"]/div[2]/div[2]/div/div/div/div/div/div/div/div/div[2]/div[1]/div/div[1]/div/div[1]/div[2]/div/i',
+                    '//div[@id="app"]//div[@class="order-container"]',
                 )
             )
         )
 
         self.browser.find_element_by_xpath(
-            '//*[@id="app"]/div[2]/div[2]/div/div/div/div/div/div/div/div/div[2]/div[1]/div/div[1]/div/div[1]/div[2]/div/i'
+            '//div[@id="app"]//div[@class="shopee-tabs__nav-tabs"]/div[2]//i'
         ).click()
 
         time.sleep(5)
 
         WebDriverWait(self.browser, 10).until(
-            EC.element_to_be_clickable((By.CLASS_NAME, "shopee-radio-button__label"))
+            EC.element_to_be_clickable((By.CLASS_NAME, "shopee-radio-button"))
         )
 
-        delivery_types = self.browser.find_elements_by_class_name(
-            "shopee-radio-button__label"
-        )
+        delivery_types = self.browser.find_elements_by_xpath('//label[contains(@class, "shopee-radio-button")]')
         num_types = 0
         while num_types < len(delivery_types):
             print(delivery_types[num_types].text.lower())
@@ -178,15 +175,14 @@ class ShopeeAutomation:
             self.delivery(delivery_types[num_types].text)
             time.sleep(5)
             num_types += 1
-            delivery_types = self.browser.find_elements_by_class_name(
-                "shopee-radio-button__label"
-            )
+            delivery_types = self.browser.find_elements_by_xpath('//label[contains(@class, "shopee-radio-button")]')
 
         time.sleep(10)
 
     def get_orders_generate_pdf(self):
+        time.sleep(5)
         products_in_table = self.browser.find_elements_by_xpath(
-            "//*[@class='shopee-table__body']/tbody/tr"
+            "//section[@class='order-list-table-body']//div[@class='order-list-table-row']"
         )
 
         number_of_orders = len(products_in_table)
@@ -296,13 +292,13 @@ class ShopeeAutomation:
             time.sleep(3)
 
             #product.find_element_by_class_name("shopee-checkbox__indicator").click()
-            
+
             WebDriverWait(self.browser, 10).until(
                 EC.presence_of_element_located(
                     (By.CLASS_NAME, "shopee-checkbox__indicator")
                 )
             )
-            
+
             while product.find_element_by_class_name(
                 "shopee-checkbox__input"
             ).is_selected():
@@ -351,9 +347,12 @@ class ShopeeAutomation:
         self.browser.close()
 
     def delivery(self, type_delivery):
-        WebDriverWait(self.browser, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "shopee-table__body"))
-        )
+        try:
+            WebDriverWait(self.browser, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "order-list-table-body"))
+            )
+        except:
+            return
 
         ret = self.get_orders_generate_pdf()
 
