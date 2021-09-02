@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -24,7 +25,6 @@ class ShopeeAutomation:
         self.cookies = ""
         self.windows_size = 0
 
-        paths = ""
         with open("config\\config.json", "r") as file:
             paths = json.loads(file.read())[0]
         self.username = paths.get("username")
@@ -39,32 +39,32 @@ class ShopeeAutomation:
             EC.presence_of_element_located(
                 (
                     By.XPATH,
-                    '//*[@id="app"]/div[2]/div/div/div/div[3]/div/div/div/div[2]/button',
+                    '//div[@id="app"]//div[@class="main-sub-account-login"]/button[contains(@class, shopee-button)]',
                 )
             )
         )
 
         self.browser.find_element_by_xpath(
-            '//*[@id="app"]/div[2]/div/div/div/div[3]/div/div/div/div[2]/button'
+            '//div[@id="app"]//div[@class="main-sub-account-login"]/button[contains(@class, shopee-button)]'
         ).click()
 
         WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located(
                 (
                     By.XPATH,
-                    "/html/body/div/main/div/div[1]/div/div/div/div/div/div/div[2]/div[2]/div/div/input",
+                    "//div[@class='container']//div[@class='username']//input",
                 )
             )
         )
 
         self.browser.find_element_by_xpath(
-            "/html/body/div/main/div/div[1]/div/div/div/div/div/div/div[2]/div[1]/div/div/div/input"
+            "//div[@class='container']//div[@class='username']//input",
         ).send_keys(self.username)
         self.browser.find_element_by_xpath(
-            "/html/body/div/main/div/div[1]/div/div/div/div/div/div/div[2]/div[2]/div/div/input"
+            "//div[@class='container']//div[contains(@class, 'password')]//input",
         ).send_keys(self.password)
         self.browser.find_element_by_xpath(
-            "/html/body/div/main/div/div[1]/div/div/div/div/div/div/button[2]"
+            "//div[@class='container']//div[@class='main-card']//button[contains(@class, 'login-btn')]"
         ).click()
 
         # self.browser.find_element_by_xpath(
@@ -74,17 +74,17 @@ class ShopeeAutomation:
             EC.presence_of_element_located(
                 (
                     By.XPATH,
-                    "/html/body/div/main/div/div[1]/div/div/div/div/div/div/div[3]/div/div/input",
+                    "//div[@class='container']//div[@class='otp']//input[@class='shopee-input__input']",
                 )
             )
         )
 
         otp = input("Enter OTP:")
         self.browser.find_element_by_xpath(
-            "/html/body/div/main/div/div[1]/div/div/div/div/div/div/div[3]/div/div/input"
+            "//div[@class='container']//div[@class='otp']//input[@class='shopee-input__input']",
         ).send_keys(otp)
         self.browser.find_element_by_xpath(
-            "/html/body/div/main/div/div[1]/div/div/div/div/div/div/button"
+            "//div[@class='container']//button[contains(@class, 'login-btn')]"
         ).click()
 
         time.sleep(10)
@@ -164,18 +164,15 @@ class ShopeeAutomation:
         )
 
         delivery_types = self.browser.find_elements_by_xpath('//label[contains(@class, "shopee-radio-button")]')
-        num_types = 0
-        while num_types < len(delivery_types):
-            print(delivery_types[num_types].text.lower())
-            if "other" in delivery_types[num_types].text.lower():
-                num_types += 1
-                continue
-            delivery_types[num_types].click()
+
+        for delivery_type in delivery_types:
+            print(delivery_type.text.lower())
+            ActionChains(self.browser).move_to_element(delivery_type).click().perform()
+            # delivery_type.click()
             time.sleep(5)
-            self.delivery(delivery_types[num_types].text)
+            self.delivery(delivery_type.text)
             time.sleep(5)
-            num_types += 1
-            delivery_types = self.browser.find_elements_by_xpath('//label[contains(@class, "shopee-radio-button")]')
+            # delivery_types = self.browser.find_elements_by_xpath('//label[contains(@class, "shopee-radio-button")]')
 
         time.sleep(10)
 
@@ -203,7 +200,7 @@ class ShopeeAutomation:
             time.sleep(5)
             product = products_in_table[product_idx]
             WebDriverWait(self.browser, 10).until(
-                EC.presence_of_element_located(
+                EC.element_to_be_clickable(
                     (By.CLASS_NAME, "shopee-checkbox__indicator")
                 )
             )
@@ -487,7 +484,6 @@ class Pdf:
 
 class Setup:
     def __init__(self):
-        paths = ""
         with open("config\\config.json", "r") as file:
             paths = json.loads(file.read())[0]
         self.homeDirectory = paths.get("homeDirectory")
