@@ -1,6 +1,5 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -15,6 +14,8 @@ import pyautogui
 import glob
 import traceback
 from datetime import datetime
+
+
 # from urllib3.packages.six import b
 
 
@@ -92,6 +93,33 @@ class ShopeeAutomation:
         self.cookies = self.browser.get_cookies()
         pickle.dump(self.cookies, open("cookies.pkl", "wb"))
 
+    def select_account(self):
+        # Select Sub Account
+        time.sleep(5)
+        account_box = self.browser.find_element_by_xpath('//div[@class="account-info-box"]')
+        ActionChains(self.browser).move_to_element(account_box).perform()
+        self.browser.find_element_by_xpath('//div[@class="subaccount-dropdown-info"]//button').click()
+        accounts = []
+
+        WebDriverWait(self.browser, 10).until(
+            EC.presence_of_element_located(
+                (
+                    By.XPATH,
+                    '//div[@class="shop-listing"]',
+                )
+            )
+        )
+        shop_list = self.browser.find_elements_by_xpath('//div[@class="shop-listing"]//div[@class="shop-list-wrapper"]')
+        for shop in shop_list:
+            shop_name = shop.find_elements_by_xpath('.//div[@class="shop-item-title"]')[0].text
+            accounts.append(shop_name)
+
+        print('Current Shops List \n')
+        print('\n'.join('{}: {}'.format(*k) for k in enumerate(accounts)))
+        select = int(input("Please enter a shop number(only from 0 to {}):\n".format(len(accounts)-1)))
+        selected_shop = shop_list[select]
+        selected_shop.click()
+
     def setup(self):
         """Take all the inputs needed."""
         chrome_options = Options()
@@ -134,6 +162,8 @@ class ShopeeAutomation:
         else:
             self.login()
 
+        self.select_account()
+
     def run(self):
         """Main code to run the program"""
         # Mass shipping
@@ -170,8 +200,20 @@ class ShopeeAutomation:
             ActionChains(self.browser).move_to_element(delivery_type).click().perform()
             # delivery_type.click()
             time.sleep(5)
+            pages = int(self.browser.find_element_by_xpath('//span[@class="shopee-pager__total"]').text)
+
             self.delivery(delivery_type.text)
             time.sleep(5)
+
+            if pages > 1:
+                current_page = int(self.browser.find_element_by_xpath('//span[@class="shopee-pager__current"]').text)
+                while current_page < pages + 1:
+                    self.browser.find_element_by_xpath(
+                        '//div[@class="shopee-pagination"]//button[contains(@class, "shopee-pager__button-next")]'
+                    ).click()
+                    time.sleep(5)
+                    self.delivery(delivery_type.text)
+                    current_page += 1
             # delivery_types = self.browser.find_elements_by_xpath('//label[contains(@class, "shopee-radio-button")]')
 
         time.sleep(10)
@@ -208,7 +250,7 @@ class ShopeeAutomation:
             order_id = product.text.split("\n")[0]
             time.sleep(3)
             if not product.find_element_by_class_name(
-                "shopee-checkbox__input"
+                    "shopee-checkbox__input"
             ).is_selected():
                 print(
                     "Cannot generate PDF for order id {}. Skipping it".format(order_id)
@@ -288,7 +330,7 @@ class ShopeeAutomation:
             self.browser.switch_to.window(self.browser.window_handles[0])
             time.sleep(3)
 
-            #product.find_element_by_class_name("shopee-checkbox__indicator").click()
+            # product.find_element_by_class_name("shopee-checkbox__indicator").click()
 
             WebDriverWait(self.browser, 10).until(
                 EC.presence_of_element_located(
@@ -297,11 +339,11 @@ class ShopeeAutomation:
             )
 
             while product.find_element_by_class_name(
-                "shopee-checkbox__input"
+                    "shopee-checkbox__input"
             ).is_selected():
                 product.find_element_by_class_name("shopee-checkbox__indicator").click()
-            
-            #self.browser.refresh()
+
+            # self.browser.refresh()
 
             """
             WebDriverWait(self.browser, 10).until(
@@ -448,12 +490,12 @@ class Pdf:
 
     def write(self):
         if self.get_file(
-            self.format_path([self.homeDirectory, self.pdfFolder, self.readPDFPattern])
+                self.format_path([self.homeDirectory, self.pdfFolder, self.readPDFPattern])
         ):
             for file in self.get_file(
-                self.format_path(
-                    [self.homeDirectory, self.jsonFolder, self.jsonPattern]
-                )
+                    self.format_path(
+                        [self.homeDirectory, self.jsonFolder, self.jsonPattern]
+                    )
             ):
                 fileData = json.loads(self.read_file(file))
                 for data in fileData:
@@ -462,9 +504,9 @@ class Pdf:
 
             cpuPDFPath = self.format_path([self.homeDirectory, self.cpuPDFFile])
             for pdfFile in self.get_file(
-                self.format_path(
-                    [self.homeDirectory, self.pdfFolder, self.readPDFPattern]
-                )
+                    self.format_path(
+                        [self.homeDirectory, self.pdfFolder, self.readPDFPattern]
+                    )
             ):
                 pdfName = pdfFile.split("\\")[-1]
                 pdf = pdfName.split(".")[0]
