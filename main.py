@@ -197,26 +197,12 @@ class ShopeeAutomation:
 
         for delivery_type in delivery_types:
             print(delivery_type.text.lower())
+            time.sleep(3)
             ActionChains(self.browser).move_to_element(delivery_type).click().perform()
             # delivery_type.click()
             time.sleep(5)
-            pages = int(self.browser.find_element_by_xpath('//span[@class="shopee-pager__total"]').text)
-
-            self.delivery(delivery_type.text)
+            self.delivery()
             time.sleep(5)
-
-            if pages > 1:
-                current_page = int(self.browser.find_element_by_xpath('//span[@class="shopee-pager__current"]').text)
-                while current_page < pages + 1:
-                    self.browser.find_element_by_xpath(
-                        '//div[@class="shopee-pagination"]//button[contains(@class, "shopee-pager__button-next")]'
-                    ).click()
-                    time.sleep(5)
-                    self.delivery(delivery_type.text)
-                    current_page += 1
-            # delivery_types = self.browser.find_elements_by_xpath('//label[contains(@class, "shopee-radio-button")]')
-
-        time.sleep(10)
 
     def get_orders_generate_pdf(self):
         time.sleep(5)
@@ -226,8 +212,8 @@ class ShopeeAutomation:
 
         number_of_orders = len(products_in_table)
         if number_of_orders == 0:
-            return 0
-        # number_of_orders = 2 if len(orders) > 2 else 1
+            return
+
         order_ids = []
         order_config = {"OrderId": None, "Products": None}
         product_details = {
@@ -356,15 +342,13 @@ class ShopeeAutomation:
             )
             """
         # click next page if available
-        next_page_ele = self.browser.find_element_by_class_name(
-            "shopee-pager__button-next"
+        next_page_ele = self.browser.find_element_by_xpath(
+            "//button[contains(@class, 'shopee-pager__button-next')]"
         )
         is_enabled = next_page_ele.is_enabled()
         if is_enabled:
-            next_page_ele.click()
+            ActionChains(self.browser).move_to_element(next_page_ele).click().perform()
             self.get_orders_generate_pdf()
-
-        return 1
 
     def save_pdf(self, order_id):
         # Saving PDF
@@ -385,25 +369,14 @@ class ShopeeAutomation:
 
         self.browser.close()
 
-    def delivery(self, type_delivery):
+    def delivery(self):
         try:
             WebDriverWait(self.browser, 10).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "order-list-table-body"))
             )
+            self.get_orders_generate_pdf()
         except:
             return
-
-        ret = self.get_orders_generate_pdf()
-
-        if ret == 0:
-            del_string = type_delivery.strip().split(" ")
-            i = 0
-            final_str = ""
-            while i < len(del_string) and del_string[i] != "(":
-                final_str += del_string[i] + " "
-                i += 1
-            print("No orders in {0}.".format(final_str))
-        # print(self.orderDetails)
 
     @property
     def get_order_details(self):
