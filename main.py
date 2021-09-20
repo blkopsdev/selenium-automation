@@ -140,7 +140,7 @@ class ShopeeAutomation:
         chrome_options.add_experimental_option("prefs", prefs)
         chrome_options.add_argument("--kiosk-printing")
         # self.chrome_options.add_argument("--headless")
-        # self.chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
         self.browser = webdriver.Chrome(
             r"chrome_webdriver/chromedriver.exe", options=chrome_options
         )
